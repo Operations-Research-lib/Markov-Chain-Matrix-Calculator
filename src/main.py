@@ -2,12 +2,20 @@ import ModellingAndOptimization as mo
 
 
 def instructions():
+    """
+    Print the instructions for the menu.
+    """
     print('Press 0 to leave the menu')
     print('Press 1 to calculate absorption probabilities')
     print('Press 2 to calculate the power of a matrix')
 
 
 def menu():
+    """
+    Display a menu to interact with the ModellingAndOptimization module.
+
+    The menu provides options to calculate absorption probabilities or the power of a matrix.
+    """
     answer = -1
     while answer != 0:
         instructions()

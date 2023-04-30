@@ -1,6 +1,7 @@
-import numpy as np
-from numpy.linalg import linalg
+import numpy as np  # import the numpy module for arrays and matrix operations
+from numpy.linalg import linalg  # import the linear algebra module from numpy
 
+# set prints options for numpy arrays
 # If True, always print floating point numbers using fixed point notation,
 # in which case numbers equal to zero in the current precision will print as zero.
 # If False, then scientific notation is used when absolute value of the smallest number
@@ -8,7 +9,12 @@ np.set_printoptions(suppress=True)
 
 
 def absortion_probabilities():
-    """This function will calculate the absorption probabilities of a markov chain"""
+    """
+    Calculate the absorption probabilities of a Markov chain.
+
+    The function reads the R and Q matrices from files, calculates the absorption probabilities,
+    and prints the result.
+    """
     try:
         # R is a submatrix of the markov chain which contains the transitions probabilities from transient states to absorbing states
         R = read_matrix(
@@ -29,7 +35,12 @@ def absortion_probabilities():
 
 
 def power_matrix():
-    '''This function will take in a matrix and a power and return the matrix to the power'''
+    """
+    Calculate the power of a matrix.
+
+    The function reads a matrix and a power from the user, calculates the matrix raised to the specified power,
+    and prints the result.
+    """
     try:
         matrix = read_matrix(
             input('Please insert the file name containing the matrix: '))
@@ -43,18 +54,27 @@ def power_matrix():
 
 
 def read_matrix(filename):
-    """This function will read a matrix from a file and return it as a 2 dimensional array
-    format of the file:
-    3 3
-    0.5 0.5 0 
-    0.25 0.5 0.25
-    0 0.5 0.5
-    The first line contains the row and column numbers of the matrix while the rest contains the values
+    """
+    The file should have the following format:
+    - The first line contains the number of rows and columns, separated by a space.
+    - The subsequent lines contain the matrix values, with each row on a separate line and values separated by spaces.
+    - format of the file:
+        3 3
+        0.5 0.5 0 
+        0.25 0.5 0.25
+        0 0.5 0.5
+    Args:
+        filename (str): The name of the file containing the matrix.
+
+    Returns:
+        np.ndarray: The matrix as a 2D NumPy array.
     """
     try:
         with open(filename, 'r') as file:
             # Read the matrix dimensions from the first line of the file
             row, cols = map(int, file.readline().split())
+            # uses np.zeros to create a 2D array of zeros with the specified dimensions
+            # it avoids mat because it is deprecated.
             matrix = np.zeros((row, cols))
             for i in range(row):
                 row_data = file.readline().split()
