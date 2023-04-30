@@ -17,11 +17,9 @@ def absortion_probabilities():
     """
     try:
         # R is a submatrix of the markov chain which contains the transitions probabilities from transient states to absorbing states
-        R = read_matrix(
-            input('Please insert the file name containing the R matrix: '))
+        R = read_matrix(input("Please insert the file name containing the R matrix: "))
         # Q is a submatrix of the markov chain which contains the transitions probabilities from transient states to transient states
-        Q = read_matrix(
-            input('Please insert the file name containing the Q matrix: '))
+        Q = read_matrix(input("Please insert the file name containing the Q matrix: "))
         # I is the identity matrix
         I = np.identity(len(Q))
         # Calculate the difference between the inverse of the identity matrix and the Q matrix
@@ -30,7 +28,7 @@ def absortion_probabilities():
         NR = N @ R
         print(NR)
     except:
-        print('Please insert a valid file name')
+        print("Please insert a valid file name")
         absortion_probabilities()
 
 
@@ -43,13 +41,14 @@ def power_matrix():
     """
     try:
         matrix = read_matrix(
-            input('Please insert the file name containing the matrix: '))
-        power = int(input('Please insert the power: '))
+            input("Please insert the file name containing the matrix: ")
+        )
+        power = int(input("Please insert the power: "))
         # Calculate the power of the matrix
         matrix = linalg.matrix_power(matrix, power)
         print(matrix)
     except ValueError:
-        print('Please insert a valid power')
+        print("Please insert a valid power")
         power_matrix()
 
 
@@ -60,7 +59,7 @@ def read_matrix(filename):
     - The subsequent lines contain the matrix values, with each row on a separate line and values separated by spaces.
     - format of the file:
         3 3
-        0.5 0.5 0 
+        0.5 0.5 0
         0.25 0.5 0.25
         0 0.5 0.5
     Args:
@@ -70,7 +69,7 @@ def read_matrix(filename):
         np.ndarray: The matrix as a 2D NumPy array.
     """
     try:
-        with open(filename, 'r') as file:
+        with open(filename, "r") as file:
             # Read the matrix dimensions from the first line of the file
             row, cols = map(int, file.readline().split())
             # uses np.zeros to create a 2D array of zeros with the specified dimensions
@@ -83,10 +82,44 @@ def read_matrix(filename):
         # Return matrix from file
         return matrix
     except FileNotFoundError:
-        print('Please insert a valid file name')
-        read_matrix(
-            input('Please insert the file name containing the matrix: '))
+        print("Please insert a valid file name")
+        read_matrix(input("Please insert the file name containing the matrix: "))
     except ValueError:
-        print('Please insert a valid file name')
-        read_matrix(
-            input('Please insert the file name containing the matrix: '))
+        print("Please insert a valid file name")
+        read_matrix(input("Please insert the file name containing the matrix: "))
+
+
+def linear_equations_solver():
+    """
+    Solve a system of linear equations.
+
+    Reads the equations system from a file, solves the system of linear equations,
+    and prints the result.
+
+    format of the file:
+        3 4
+        1 2 3 4
+        4 5 6 7
+        7 8 9 10
+
+    this file represents the following system of linear equations:
+        1x + 2y + 3z = 4
+        4x + 5y + 6z = 7
+        7x + 8y + 9z = 10
+    """
+    try:
+        # equations_system is the matrix with the coefficients of the system of linear equations
+        equations_system = read_matrix(
+            input("Please insert the file name containing the equations system: ")
+        )
+        # A is the matrix of coefficients
+        # The last column of the matrix is the matrix of constants so we remove it
+        A = equations_system[:, :-1]
+        # b is the matrix of constants, aka the last column of the matrix
+        b = equations_system[:, -1]
+        # Calculate the solution of the system of linear equations
+        x = linalg.solve(A, b)
+        print(x)
+    except:
+        print("Please insert a valid file name")
+        linear_equations_solver()

@@ -5,9 +5,10 @@ def instructions():
     """
     Print the instructions for the menu.
     """
-    print('Press 0 to leave the menu')
-    print('Press 1 to calculate absorption probabilities')
-    print('Press 2 to calculate the power of a matrix')
+    print("Press 0 to leave the menu")
+    print("Press 1 to calculate absorption probabilities")
+    print("Press 2 to calculate the power of a matrix")
+    print("Press 3 to solve a equation system")
 
 
 def menu():
@@ -19,7 +20,7 @@ def menu():
     answer = -1
     while answer != 0:
         instructions()
-        answer = int(input('Answer: '))
+        answer = int(input("Answer: "))
 
         if answer == 1:
             # Call the function to calculate absorption probabilities here
@@ -29,6 +30,10 @@ def menu():
             print("--- Power of a Matrix ---")
             # Call the function to calculate the power of a matrix here
             mo.power_matrix()
+        elif answer == 3:
+            print("--- Linear Equations Solver ---")
+            # Call the function to solve a system of linear equations here
+            mo.linear_equations_solver()
         elif answer == 0:
             print("Exiting the menu...")
         else:
