@@ -15,11 +15,11 @@ def absortion_probabilities():
     The function reads the R and Q matrices from files, calculates the absorption probabilities,
     and prints the result.
     """
+    # R is a submatrix of the markov chain which contains the transitions probabilities from transient states to absorbing states
+    R = read_matrix(input("Please insert the file name containing the R matrix: "))
+    # Q is a submatrix of the markov chain which contains the transitions probabilities from transient states to transient states
+    Q = read_matrix(input("Please insert the file name containing the Q matrix: "))
     try:
-        # R is a submatrix of the markov chain which contains the transitions probabilities from transient states to absorbing states
-        R = read_matrix(input("Please insert the file name containing the R matrix: "))
-        # Q is a submatrix of the markov chain which contains the transitions probabilities from transient states to transient states
-        Q = read_matrix(input("Please insert the file name containing the Q matrix: "))
         # I is the identity matrix
         I = np.identity(len(Q))
         # Calculate the difference between the inverse of the identity matrix and the Q matrix
@@ -29,7 +29,11 @@ def absortion_probabilities():
         print(NR)
     except:
         print("Please insert a valid file name")
-        absortion_probabilities()
+        option = int(input("do you want to try again? (yes:1/no:0)"))
+        if option == 1:
+            absortion_probabilities()
+        else:
+            pass
 
 
 def power_matrix():
@@ -39,18 +43,21 @@ def power_matrix():
     The function reads a matrix and a power from the user, calculates the matrix raised to the specified power,
     and prints the result.
     """
+    matrix = read_matrix(
+        input("Please insert the file name containing the matrix: ")
+    )
     try:
-        matrix = read_matrix(
-            input("Please insert the file name containing the matrix: ")
-        )
         power = int(input("Please insert the power: "))
         # Calculate the power of the matrix
         matrix = linalg.matrix_power(matrix, power)
         print(matrix)
     except ValueError:
         print("Please insert a valid power")
-        power_matrix()
-
+        option = int(input("do you want to try again? (yes:1/no:0)"))
+        if option == 1:
+            power_matrix()
+        else:
+            pass
 
 def read_matrix(filename):
     """
@@ -83,10 +90,18 @@ def read_matrix(filename):
         return matrix
     except FileNotFoundError:
         print("Please insert a valid file name")
-        read_matrix(input("Please insert the file name containing the matrix: "))
+        option = int(input("do you want to try again? (yes:1/no:0)"))
+        if option == 1:
+            read_matrix(input("Please insert the file name containing the matrix: "))
+        else:
+            pass
     except ValueError:
         print("Please insert a valid file name")
-        read_matrix(input("Please insert the file name containing the matrix: "))
+        option = int(input("do you want to try again? (yes:1/no:0)"))
+        if option == 1:
+            read_matrix(input("Please insert the file name containing the matrix: "))
+        else:
+            pass
 
 
 def linear_equations_solver():
@@ -107,11 +122,11 @@ def linear_equations_solver():
         4x + 5y + 6z = 7
         7x + 8y + 9z = 10
     """
+    # equations_system is the matrix with the coefficients of the system of linear equations
+    equations_system = read_matrix(
+        input("Please insert the file name containing the equations system: ")
+    )
     try:
-        # equations_system is the matrix with the coefficients of the system of linear equations
-        equations_system = read_matrix(
-            input("Please insert the file name containing the equations system: ")
-        )
         # A is the matrix of coefficients
         # The last column of the matrix is the matrix of constants so we remove it
         A = equations_system[:, :-1]
@@ -121,5 +136,9 @@ def linear_equations_solver():
         x = linalg.solve(A, b)
         print(x)
     except:
-        print("Please insert a valid file name")
-        linear_equations_solver()
+        print("Please insert a file containing a valid matrix")
+        option = int(input("do you want to try again? (yes:1/no:0)"))
+        if option == 1:
+            linear_equations_solver()
+        else:
+            pass

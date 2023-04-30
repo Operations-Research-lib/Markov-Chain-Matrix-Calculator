@@ -15,7 +15,8 @@ def menu():
     """
     Display a menu to interact with the ModellingAndOptimization module.
 
-    The menu provides options to calculate absorption probabilities or the power of a matrix.
+    The menu provides options to calculate absorption probabilities or the
+    power of a matrix.
     """
     answer = -1
     while answer != 0:
