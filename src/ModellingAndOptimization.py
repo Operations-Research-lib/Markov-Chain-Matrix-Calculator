@@ -51,6 +51,13 @@ def power_matrix():
         # Calculate the power of the matrix
         matrix = linalg.matrix_power(matrix, power)
         print(matrix)
+    except linalg.LinAlgError:
+        print("matrix is not square or power is not positive")
+        option = int(input("do you want to try again? (yes:1/no:0)"))
+        if option == 1:
+            power_matrix()
+        else:
+            pass
     except ValueError:
         print("Please insert a valid power")
         option = int(input("do you want to try again? (yes:1/no:0)"))
@@ -132,13 +139,17 @@ def linear_equations_solver():
         A = equations_system[:, :-1]
         # b is the matrix of constants, aka the last column of the matrix
         b = equations_system[:, -1]
+        # b is a column vector
+        #b = b_not.reshape(len(b_not), 1)
         # Calculate the solution of the system of linear equations
         x = linalg.solve(A, b)
+        print("X = ",end="")
         print(x)
-    except:
-        print("Please insert a file containing a valid matrix")
+    except linalg.LinAlgError:
+        print("this system of linear equations has either no solution or a unique solution")
         option = int(input("do you want to try again? (yes:1/no:0)"))
         if option == 1:
-            linear_equations_solver()
+            read_matrix(input("Please insert the file name containing the matrix: "))
         else:
             pass
+
