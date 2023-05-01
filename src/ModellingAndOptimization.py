@@ -2,6 +2,8 @@ import numpy as np  # import the numpy module for arrays and matrix operations
 from numpy.linalg import (
     linalg as lineaAlgebra,
 )  # import the linear algebra module from numpy
+import networkx as nx
+import matplotlib.pyplot as plt
 
 # set prints options for numpy arrays
 # If True, always print floating point numbers using fixed point notation,
@@ -191,5 +193,101 @@ def find_steady_states():
         )
         if option == 1:
             find_steady_states()
+        else:
+            pass
+
+
+def read_markov_chain_to_graph(filename):
+    with open(filename, "r") as file:
+        # Read the first line, strip leading/trailing whitespaces,
+        # split the values and convert them to integers
+        rows, cols = map(int, file.readline().strip().split())
+
+        # Read the second line, strip leading/trailing whitespaces, and split the state labels
+        state_labels = file.readline().strip().split()
+        transition_matrix = np.zeros((rows, cols))
+        for i in range(rows):
+            row_data = file.readline().split()
+            for j in range(cols):
+                transition_matrix[i][j] = float(row_data[j])
+    return transition_matrix, state_labels
+
+
+def draw_markov_chain():
+    """
+    This function reads a Markov chain from a file, creates a weighted directed graph using the NetworkX library,
+    and visualizes the graph with node and edge labels. The input file should contain the transition matrix and
+    state labels of the Markov chain.
+    format of the file:
+
+    4 4
+    I T D R
+    0.05 0.93 0.02 0
+    0.1 0.86 0.04 0
+    0 0 0.8 0.2
+    0.5 0.1 0 0.4
+
+    where the first line contains the number of rows and columns of the transition matrix,
+    the second line contains the state labels, and the remaining lines contain the transition matrix.
+    Limitations: self pointing edges are do not show weights.
+    """
+    # Prompt the user to input the file name containing the transition matrix
+    filename = input("Please insert the file name containing the transition matrix: ")
+    # Try to open the file and read its contents
+    try:
+        transition_matrix, state_labels = read_markov_chain_to_graph(filename)
+        # Initialize a directed graph object
+        G = nx.DiGraph()
+        # Iterate through the state labels and their indices
+        for i, state in enumerate(state_labels):
+            # for each state, add a node to the graph
+            G.add_node(state)
+            # Iterate through the transition probability in the
+            # transition matrix row corresponding to the current state
+            for j, transition_probability in enumerate(transition_matrix[i]):
+                # for each transition_probability that is greater than zero, add
+                # a weighted edge to the graph
+                if transition_probability > 0:
+                    G.add_edge(state, state_labels[j], weight=transition_probability)
+        # Create using circular layout for the graph
+        pos = nx.circular_layout(G)
+        # Draw the graph with nodes and labels
+        nx.draw(
+            G,
+            pos,
+            with_labels=True,
+            node_size=2000,
+            node_color="skyblue",
+            font_weight="bold",
+        )
+        # Get the edge attributes (weights) from the graph
+        edge_labels = nx.get_edge_attributes(G, "weight")
+        # Draw the edge labels on the graph
+        nx.draw_networkx_edge_labels(
+            G, pos, edge_labels=edge_labels, label_pos=0.3, font_size=10
+        )
+        # Display the graph
+        plt.show()
+    except FileNotFoundError:
+        print("-ERROR: Please insert a valid file name")
+        option = int(input("- do you want to try again or exit()? (yes:1/no:0): "))
+        if option == 1:
+            draw_markov_chain(
+                input("Please insert the file name containing the Markov chain: ")
+            )
+        else:
+            pass
+    except IndexError:
+        print("-ERROR: Please insert a matrix with the correct dimensions")
+        option = int(input("- do you want to try again or exit()? (yes:1/no:0): "))
+        if option == 1:
+            draw_markov_chain()
+        else:
+            pass
+    except Exception as e:
+        print("-ERROR: ", e)
+        option = int(input("- do you want to try again or exit()? (yes:1/no:0): "))
+        if option == 1:
+            draw_markov_chain()
         else:
             pass

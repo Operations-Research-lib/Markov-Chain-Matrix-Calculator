@@ -10,7 +10,8 @@ def instructions():
     print("Press 1 to calculate absorption probabilities")
     print("Press 2 to calculate the power of a matrix")
     print("Press 3 to solve a equation system")
-    print("Press 4 to find stable states\n")
+    print("Press 4 to find stable states")
+    print("Press 5 to draw a graph of the markov chain\n")
 
 
 def menu():
@@ -42,6 +43,10 @@ def menu():
                 print("--- Find Stable States ---")
                 # Call the function to find stable states here
                 mo.find_steady_states()
+            elif answer == 5:
+                print("--- Draw a Graph ---")
+                # Call the function to draw a graph here
+                mo.draw_markov_chain()
             elif answer == 0:
                 print("Exiting the menu...")
             else:
