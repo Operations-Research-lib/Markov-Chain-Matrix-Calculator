@@ -1,6 +1,6 @@
 import numpy as np  # import the numpy module for arrays and matrix operations
 from numpy.linalg import (
-    linalg as lineaAlgebra,
+    linalg as linearAlgebra,
 )  # import the linear algebra module from numpy
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -27,7 +27,7 @@ def absorption_probabilities():
         # I is the identity matrix
         I = np.identity(len(Q))
         # Calculate the difference between the inverse of the identity matrix and the Q matrix
-        N = lineaAlgebra.inv(I - Q)
+        N = linearAlgebra.inv(I - Q)
         # Calculate the absorption probabilities by multiplying the N matrix by the R matrix
         NR = N @ R
         print(NR)
@@ -51,9 +51,9 @@ def power_matrix():
     try:
         power = int(input("Please insert the power: "))
         # Calculate the power of the matrix
-        matrix = lineaAlgebra.matrix_power(matrix, power)
+        matrix = linearAlgebra.matrix_power(matrix, power)
         print(matrix)
-    except lineaAlgebra.lineaAlgebraError:
+    except linearAlgebra.LinAlgError:
         print("matrix is not square or power is not positive")
         option = int(input("- do you want to try again? (yes:1/no:0): "))
         if option == 1:
@@ -138,10 +138,10 @@ def linear_equations_solver():
         # b is a column vector
         # b = b_not.reshape(len(b_not), 1)
         # Calculate the solution of the system of linear equations
-        x = lineaAlgebra.solve(A, b)
+        x = linearAlgebra.solve(A, b)
         print("X = ", end="")
         print(x)
-    except lineaAlgebra.lineaAlgebraError:
+    except linearAlgebra.LinAlgError:
         print(
             "-ERROR: this system of linear equations has either no solution or no unique solution"
         )
@@ -180,11 +180,11 @@ def find_steady_states():
         # matrix_diff * steady_state = b for the steady_state vector.
         # lstsq() returns a tuple, and the first element ([0]) contains the solution.
         # rcond=None is set for using the default machine precision for the conditioning of the matrix.
-        pi = lineaAlgebra.lstsq(A, b, rcond=None)[0]
+        pi = linearAlgebra.lstsq(A, b, rcond=None)[0]
         # Print the steady state vector
         print("pi = ", end="")
         print(pi)
-    except lineaAlgebra.lineaAlgebraError:
+    except linearAlgebra.LinAlgError:
         print(
             "-ERROR: this system of linear equations made to calculate stables states has either no solution or a no unique solution"
         )
